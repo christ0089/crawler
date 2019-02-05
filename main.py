@@ -21,7 +21,8 @@ import datetime
 def getLinks(url, pageNum):
     links= []
     url+= "/" + str(pageNum)
-    rqst = req.Request(url)
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    rqst = req.Request(url, headers= headers)
     html = req.urlopen(rqst)
     txt = html.read().decode('utf-8')
     soup = bs(txt, 'html.parser')
@@ -41,30 +42,32 @@ def crawl(url, iterations, arts, auths):
         links = getLinks(url, i)
         
         for link in links:
+            print(link)
             time.sleep(random.randint(3, 7))
-            linkReq = req.Request(link)
+            headers = {'User-Agent': 'Mozilla/5.0'}
+            linkReq = req.Request(link, headers= headers)
             linkRes = req.urlopen(linkReq)
             html = linkRes.read().decode('utf-8')
             article_soup = bs(html, 'html.parser')
             # Getting date info
             date = str(article_soup.find('span', 'date', 'updated').text)
             dParts= date.split(' ')
-            day= dParts[0]
+            day= int(dParts[0])
             mo= dParts[1]
-            yr= dParts[2]
-            if mo == "ENE": mo= 1
-            elif mo== "FEB": mo= 2
-            elif mo == "MAR": mo = 3
-            elif mo== "ABR": mo = 4
-            elif mo == "MAY": mo= 5
-            elif mo == "JUN": mo = 6
-            elif mo == "JUL": mo= 7
-            elif mo == "AGO": mo= 8
-            elif mo == "SEP": mo= 9
-            elif mo == "OCT": mo = 10
-            elif mo== "NOV": mo = 11
-            elif mo == "DIC": mo = 12
-            timestamp= datetime.datetime(yr, mo, day)
+            yr=int( dParts[2])
+            if mo == "Ene": mo= 1
+            elif mo== "Feb": mo= 2
+            elif mo == "Mar": mo = 3
+            elif mo== "Abr": mo = 4
+            elif mo == "May": mo= 5
+            elif mo == "Jun": mo = 6
+            elif mo == "Jul": mo= 7
+            elif mo == "Ago": mo= 8
+            elif mo == "Sep": mo= 9
+            elif mo == "Oct": mo = 10
+            elif mo== "Nov": mo = 11
+            elif mo == "Dic": mo = 12
+            timestamp= int(datetime.datetime(yr, mo, day).timestamp())
             
 
             titleTag= article_soup.find('h1', 'entry-title')
@@ -76,11 +79,11 @@ def crawl(url, iterations, arts, auths):
             author = article_soup.find("div", "entry-author")
             innerHTML= str(titleTag) + articleContent
             title= str(titleTag.text)
-            thumb= str(article_soup.find('div', 'br').find('img')['src'])
+            thumb= str(article_soup.find('div', 'thumb').find('img')['src'])
             # Getting the author's name
-            author = str(articleContent.find('span').find('a').text)
+            author = str(article_soup.find('span', 'name').find('a').text)
             username= "@" + author
-            username.replace(' ', '_')
+            username= username.replace(' ', '_')
             authID= ''
             if not username in auths:
                 action= s_a_r.child("Authors").push({

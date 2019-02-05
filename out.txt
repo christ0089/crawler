@@ -1,0 +1,62 @@
+https://blog.seccionamarilla.com.mx/tendencias-ecommerce-mexico-2019/
+https://blog.seccionamarilla.com.mx/implementar-home-office-en-tu-empresa/
+https://blog.seccionamarilla.com.mx/eventos-para-emprendedores-2019/
+https://blog.seccionamarilla.com.mx/tips-de-marketing-digital/
+https://blog.seccionamarilla.com.mx/como-emprender-negocio/
+https://blog.seccionamarilla.com.mx/consejos-para-abrir-una-cafeteria-de-especialidad/
+https://blog.seccionamarilla.com.mx/cerveceros-artesanales-de-mexicali-el-exito-de-la-union/
+https://blog.seccionamarilla.com.mx/industria-4-0-papel-mexico/
+https://blog.seccionamarilla.com.mx/el-cempasuchil-de-san-gregorio-flores-para-dia-de-muertos-en-xochimilco/
+https://blog.seccionamarilla.com.mx/como-registrarse-en-compranet/
+https://blog.seccionamarilla.com.mx/prueba-y-error-en-marketing-digital-falta-estrategia/
+https://blog.seccionamarilla.com.mx/celulares-mexicanos-vale-pena-intento/
+https://blog.seccionamarilla.com.mx/ledco-pyme-robotica-educativa-abrirse-paso-tecnologia-mexico/
+https://blog.seccionamarilla.com.mx/semana-del-emprendedor/
+https://blog.seccionamarilla.com.mx/isla-urbana-captacion-de-agua-de-lluvia/
+https://blog.seccionamarilla.com.mx/consejos-empresas-combatir-ausencias-en-el-mundial-rusia-2018/
+https://blog.seccionamarilla.com.mx/tendencias-de-trabajo-en-la-era-digital/
+https://blog.seccionamarilla.com.mx/sororidad-laboral-termino-refiere-a-la-hermandad-femenina/
+https://blog.seccionamarilla.com.mx/habilidades-del-community-manager-empresa/
+Traceback (most recent call last):
+  File "/usr/lib/python3.5/urllib/request.py", line 1254, in do_open
+    h.request(req.get_method(), req.selector, req.data, headers)
+  File "/usr/lib/python3.5/http/client.py", line 1107, in request
+    self._send_request(method, url, body, headers)
+  File "/usr/lib/python3.5/http/client.py", line 1152, in _send_request
+    self.endheaders(body)
+  File "/usr/lib/python3.5/http/client.py", line 1103, in endheaders
+    self._send_output(message_body)
+  File "/usr/lib/python3.5/http/client.py", line 934, in _send_output
+    self.send(msg)
+  File "/usr/lib/python3.5/http/client.py", line 877, in send
+    self.connect()
+  File "/usr/lib/python3.5/http/client.py", line 1253, in connect
+    super().connect()
+  File "/usr/lib/python3.5/http/client.py", line 849, in connect
+    (self.host,self.port), self.timeout, self.source_address)
+  File "/usr/lib/python3.5/socket.py", line 694, in create_connection
+    for res in getaddrinfo(host, port, 0, SOCK_STREAM):
+  File "/usr/lib/python3.5/socket.py", line 733, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -5] No address associated with hostname
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "./main.py", line 138, in <module>
+    crawl(entrepreneurshipUrl, 9, articles_dict, authors_dict)
+  File "./main.py", line 47, in crawl
+    linkRes = req.urlopen(linkReq)
+  File "/usr/lib/python3.5/urllib/request.py", line 163, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib/python3.5/urllib/request.py", line 466, in open
+    response = self._open(req, data)
+  File "/usr/lib/python3.5/urllib/request.py", line 484, in _open
+    '_open', req)
+  File "/usr/lib/python3.5/urllib/request.py", line 444, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.5/urllib/request.py", line 1297, in https_open
+    context=self._context, check_hostname=self._check_hostname)
+  File "/usr/lib/python3.5/urllib/request.py", line 1256, in do_open
+    raise URLError(err)
+urllib.error.URLError: <urlopen error [Errno -5] No address associated with hostname>
