@@ -47,14 +47,14 @@ def crawl(url, iterations, arts, auths):
             article_soup = bs(html, 'html.parser')
             # String that will hold the author's social media info
             socs = ''
-            articleContent
-            author
-            author_link
+            articleContent= ''
+            author= ''
+            author_link= ''
             # Getting the tag where the article content is
             for articleContent in article_soup.find_all("div", "entry-content"):
                 # Substituting unuseful tags
-                articleContent += re.sub(eoa, "", str(articleContent))
-                articleContent += re.sub(blogLinks, "", articleContent)
+                articleContent= re.sub(eoa, "", str(articleContent))
+                articleContent= re.sub(blogLinks, "", str(articleContent))
             for auth in article_soup.find_all("div", "entry-author"):
                 # Getting the author's name and link to its blog profile
                 author = str(auth.find('span').find('a').text)
