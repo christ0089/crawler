@@ -15,7 +15,9 @@ import re
 # Other imports
 import time
 import random
+import datetime
 
+# This function gets the links from a page given a url and the page number
 def getLinks(url, pageNum):
     links= []
     url+= "/" + str(pageNum)
@@ -25,8 +27,7 @@ def getLinks(url, pageNum):
     soup = bs(txt, 'html.parser')
     for header in soup.find_all('h2'):
         link = header.find('a', href=True)
-        #file.write(link)
-        links.insert(0, link['href'])
+        links.append(link['href'])
     return links
 
 def crawl(url, iterations, arts, auths):
@@ -40,48 +41,74 @@ def crawl(url, iterations, arts, auths):
         links = getLinks(url, i)
         
         for link in links:
-            time.sleep(random.randint(1, 4))
+            time.sleep(random.randint(3, 7))
             linkReq = req.Request(link)
             linkRes = req.urlopen(linkReq)
             html = linkRes.read().decode('utf-8')
             article_soup = bs(html, 'html.parser')
-            # String that will hold the author's social media info
-            socs = ''
-            articleContent= ''
-            author= ''
-            author_link= ''
+            # Getting date info
+            date = str(article_soup.find('span', 'date', 'updated').text)
+            dParts= date.split(' ')
+            day= dParts[0]
+            mo= dParts[1]
+            yr= dParts[2]
+            if mo == "ENE": mo= 1
+            elif mo== "FEB": mo= 2
+            elif mo == "MAR": mo = 3
+            elif mo== "ABR": mo = 4
+            elif mo == "MAY": mo= 5
+            elif mo == "JUN": mo = 6
+            elif mo == "JUL": mo= 7
+            elif mo == "AGO": mo= 8
+            elif mo == "SEP": mo= 9
+            elif mo == "OCT": mo = 10
+            elif mo== "NOV": mo = 11
+            elif mo == "DIC": mo = 12
+            timestamp= datetime.datetime(yr, mo, day)
+            
+
+            titleTag= article_soup.find('h1', 'entry-title')
+
             # Getting the tag where the article content is
-            for articleContent in article_soup.find_all("div", "entry-content"):
-                # Substituting unuseful tags
-                articleContent= re.sub(eoa, "", str(articleContent))
-                articleContent= re.sub(blogLinks, "", str(articleContent))
-            for auth in article_soup.find_all("div", "entry-author"):
-                # Getting the author's name and link to its blog profile
-                author = str(auth.find('span').find('a').text)
-                author_link = str(auth.find('span').find('a')['href'])
-                # Checking if author has links to its social networks
-                socials = []
-                socialSpan = article_soup.find('span', 'saboxplugin-socials')
-                if socialSpan:
-                    for soc in socialSpan.find_all('a'):
-                        socials.append(soc)
-                if len(socials) != 0:
-                    socs = '||'.join(soc for soc in socs)
-                else:
-                    socs = "None"
+            articleContent = article_soup.find("div", "entry-content")
+            articleContent= re.sub(eoa, "", str(articleContent))
+            articleContent= re.sub(blogLinks, "", str(articleContent))
+            author = article_soup.find("div", "entry-author")
+            innerHTML= str(titleTag) + articleContent
+            title= str(titleTag.text)
+            thumb= str(article_soup.find('div', 'thumb').find('img'))
+            # Getting the author's name
+            author = str(articleContent.find('span').find('a').text)
+            username= "@" + author
+            username.replace(' ', '_')
+            authID= ''
+            if not username in auths:
+                action= s_a_r.child("Authors").push({
+                    'Emai': '',
+                    'CoverImg': "https://firebasestorage.googleapis.com/v0/b/teclink-8e19c.appspot.com/o/User%20Images%2Fplaceholder.png?alt=media&token=7591c228-e4c5-40ee-bbc6-a0aab64476e5",
+                    'Followers': 0,
+                    'Following': 0,
+                    'Name': author,
+                    'ProfileImg': "https://firebasestorage.googleapis.com/v0/b/teclink-8e19c.appspot.com/o/User%20Images%2Fprofile_pic.jpg?alt=media&token=ebefced4-a054-4cd3-a806-c8e6b86a62b0",
+                    'Skill': "",
+                    'Tagline': '',
+                    'UserName': username,
+                })
+                auths[username] = action.key
+                authID= action.key
+            else: authID= auths[username]
             if not articleContent in arts:
                 s_a_r.child("Articles").push({
-                    'author': author,
-                    'content': articleContent
+                    'InnerHTML': innerHTML,
+                    'Title': title,
+                    'Uploader': authID,
+                    'CoverImg': thumb,
+                    'Timestamp': timestamp,
+                    'Category': 'Tech',
+                    'Boosts': 0,
+                    'InvBoosts': 0
                 })
                 arts[articleContent] = 1
-            if not author_link in auths:
-                s_a_r.child("Authors").push({
-                    'name': author,
-                    'link': author_link,
-                    'contact': socs
-                })
-                auths[author_link] = 1
 
 
 
