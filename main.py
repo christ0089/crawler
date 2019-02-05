@@ -76,7 +76,7 @@ def crawl(url, iterations, arts, auths):
             author = article_soup.find("div", "entry-author")
             innerHTML= str(titleTag) + articleContent
             title= str(titleTag.text)
-            thumb= str(article_soup.find('div', 'thumb').find('img'))
+            thumb= str(article_soup.find('div', 'br').find('img')['src'])
             # Getting the author's name
             author = str(articleContent.find('span').find('a').text)
             username= "@" + author
