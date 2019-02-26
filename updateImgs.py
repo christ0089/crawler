@@ -63,7 +63,7 @@ def updateTags():
         print(pts[1])
         print(pts[2])
 
-        tag= re.sub(pattern, '<div class=\"entry-content\"><img src="'+pts[0]+'">' + "<div>Photo from " + pts[2] + "</div>", tags[line])
+        tag= re.sub(pattern, '<div class=\"entry-content\"><img src="'+pts[0]+'">' + "<div>Photo from " + pts[2].rstrip() + " by Unsplash</div>", tags[line])
         hashd[line]= tag + '|' + pts[1]
         print(hashd[line])
 
